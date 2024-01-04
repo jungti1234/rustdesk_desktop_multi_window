@@ -6,7 +6,6 @@ import 'package:desktop_multi_window/desktop_multi_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_multi_window_example/event_widget.dart';
-import 'dart:ui' as ui;
 
 int winId = 0;
 
@@ -15,10 +14,7 @@ void main(List<String> args) async {
   if (args.firstOrNull == 'multi_window') {
     final windowId = int.parse(args[1]);
     winId = windowId;
-    final argument = args[2].isEmpty
-        ? const {}
-        : jsonDecode(args[2]) as Map<String, dynamic>;
-    WindowController.fromWindowId(windowId).showTitleBar(false);
+    final argument = args[2].isEmpty ? const {} : jsonDecode(args[2]) as Map<String, dynamic>;
     WindowController.fromWindowId(windowId).show();
     WindowController.fromWindowId(windowId).focus();
     runApp(_ExampleSubWindow(
@@ -66,8 +62,7 @@ class _ExampleMainWindowState extends State<_ExampleMainWindow> {
                 FutureBuilder(
                   builder: (context, data) {
                     if (data.hasData) {
-                      return Text(
-                          "WindowID: ${WindowController.main().windowId}, XID: ${data.data}");
+                      return Text("WindowID: ${WindowController.main().windowId}, XID: ${data.data}");
                     } else {
                       return Text(data.error.toString());
                     }
@@ -78,8 +73,7 @@ class _ExampleMainWindowState extends State<_ExampleMainWindow> {
                 cursor: SystemMouseCursors.alias,
                 child: TextButton(
                   onPressed: () async {
-                    final window =
-                        await DesktopMultiWindow.createWindow(jsonEncode({
+                    final window = await DesktopMultiWindow.createWindow(jsonEncode({
                       'args1': 'Sub window',
                       'args2': 100,
                       'args3': true,
@@ -97,8 +91,7 @@ class _ExampleMainWindowState extends State<_ExampleMainWindow> {
               TextButton(
                 child: const Text('Send event to all sub windows'),
                 onPressed: () async {
-                  final subWindowIds =
-                      await DesktopMultiWindow.getAllSubWindowIds();
+                  final subWindowIds = await DesktopMultiWindow.getAllSubWindowIds();
                   for (final windowId in subWindowIds) {
                     DesktopMultiWindow.invokeMethod(
                       windowId,
@@ -109,8 +102,7 @@ class _ExampleMainWindowState extends State<_ExampleMainWindow> {
                 },
               ),
               Expanded(
-                child:
-                    EventWidget(controller: WindowController.fromWindowId(0)),
+                child: EventWidget(controller: WindowController.fromWindowId(0)),
               )
             ],
           ),
@@ -155,15 +147,13 @@ class _ExampleSubWindow extends StatelessWidget {
 class SubWindowContent extends StatefulWidget {
   final WindowController windowController;
   final Map? args;
-  const SubWindowContent({Key? key, required this.windowController, this.args})
-      : super(key: key);
+  const SubWindowContent({Key? key, required this.windowController, this.args}) : super(key: key);
 
   @override
   State<SubWindowContent> createState() => _SubWindowContentState();
 }
 
-class _SubWindowContentState extends State<SubWindowContent>
-    with MultiWindowListener {
+class _SubWindowContentState extends State<SubWindowContent> with MultiWindowListener {
   bool isPreventClose = false;
 
   @override
@@ -180,7 +170,7 @@ class _SubWindowContentState extends State<SubWindowContent>
 
   @override
   void onWindowEvent(String eventName) {
-    print("window event: ${eventName}");
+    print("window event: $eventName");
   }
 
   @override
@@ -205,7 +195,7 @@ class _SubWindowContentState extends State<SubWindowContent>
               onPanDown: (_) {
                 widget.windowController.startDragging();
               },
-              child: Row(children: [Expanded(child: Text("Multi Window App"))]),
+              child: const Row(children: [Expanded(child: Text("Multi Window App"))]),
             ),
           ),
           body: Column(
@@ -214,8 +204,7 @@ class _SubWindowContentState extends State<SubWindowContent>
                 FutureBuilder(
                   builder: (context, data) {
                     if (data.hasData) {
-                      return Text(
-                          "WindowID: ${widget.windowController.windowId}, XID: ${data.data}");
+                      return Text("WindowID: ${widget.windowController.windowId}, XID: ${data.data}");
                     } else {
                       return Text(data.error.toString());
                     }
@@ -247,13 +236,11 @@ class _SubWindowContentState extends State<SubWindowContent>
                 onPressed: () async {
                   isPreventClose = !isPreventClose;
                   widget.windowController.setPreventClose(isPreventClose);
-      
+
                   isPreventClose = await widget.windowController.isPreventClose();
                   setState(() {});
                 },
-                child: Text(!isPreventClose
-                    ? 'Set Prevent Close'
-                    : 'Unset Prevent Close'),
+                child: Text(!isPreventClose ? 'Set Prevent Close' : 'Unset Prevent Close'),
               ),
               TextButton(
                 onPressed: () async {
