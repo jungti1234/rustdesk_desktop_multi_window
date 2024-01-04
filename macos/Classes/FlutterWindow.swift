@@ -84,9 +84,9 @@ class BaseFlutterWindow: NSObject {
       window.miniaturize(nil)
   }
     
-    func isFullScreen() -> Bool {
-        return window.styleMask.contains(.fullScreen)
-    }
+  func isFullScreen() -> Bool {
+      return window.styleMask.contains(.fullScreen)
+  }
 
   func setFullscreen(fullscreen: Bool) {
     if (fullscreen) {
@@ -120,6 +120,14 @@ class BaseFlutterWindow: NSObject {
     window.title = title
   }
 
+  func resizable(resizable: Bool) {
+    if (resizable) {
+      window.styleMask.insert(.resizable)
+    } else {
+      window.styleMask.remove(.resizable)
+    }
+  }
+
   func close() {
     window.performClose(nil)
   }
@@ -141,13 +149,13 @@ class BaseFlutterWindow: NSObject {
     // ignore
   }
     
-    func isPreventClose() -> Bool{
-        return _isPreventClose
-    }
-    
-    func setPreventClose(setPreventClose: Bool) {
-        _isPreventClose = setPreventClose
-    }
+  func isPreventClose() -> Bool{
+      return _isPreventClose
+  }
+  
+  func setPreventClose(setPreventClose: Bool) {
+      _isPreventClose = setPreventClose
+  }
 }
 
 /// Add extra hooks for window

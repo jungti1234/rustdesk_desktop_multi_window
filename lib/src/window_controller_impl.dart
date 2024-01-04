@@ -1,4 +1,4 @@
-import 'dart:ui';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -77,6 +77,20 @@ class WindowControllerMainImpl extends WindowController {
       'windowId': _id,
       'title': title,
     });
+  }
+
+  @override
+  Future<void> resizable(bool resizable) {
+    if (Platform.isMacOS) {
+      return _channel.invokeMethod('resizable', <String, dynamic>{
+        'windowId': _id,
+        'resizable': resizable,
+      });
+    } else {
+      throw MissingPluginException(
+        'This functionality is only available on macOS',
+      );
+    }
   }
 
   @override

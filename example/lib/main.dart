@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:collection/collection.dart';
 import 'package:desktop_multi_window/desktop_multi_window.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/services/mouse_cursor.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_multi_window_example/event_widget.dart';
 import 'dart:ui' as ui;
 
