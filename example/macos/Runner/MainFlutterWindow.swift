@@ -1,8 +1,8 @@
 import Cocoa
 import FlutterMacOS
 import desktop_multi_window
-// import desktop_lifecycle
-import window_manager
+import desktop_lifecycle
+import window_manipulator
 
 class MainFlutterWindow: NSWindow {
   override func awakeFromNib() {
@@ -15,8 +15,8 @@ class MainFlutterWindow: NSWindow {
     
     FlutterMultiWindowPlugin.setOnWindowCreatedCallback { controller in
       // Register the plugin which you want access from other isolate.
-      // DesktopLifecyclePlugin.register(with: controller.registrar(forPlugin: "DesktopLifecyclePlugin"))
-      DesktopLifecyclePlugin.register(with: controller.registrar(forPlugin: "WindowManager"))
+      DesktopLifecyclePlugin.register(with: controller.registrar(forPlugin: "DesktopLifecyclePlugin"))
+      DesktopLifecyclePlugin.register(with: controller.registrar(forPlugin: "windowManipulator"))
     }
 
     super.awakeFromNib()
